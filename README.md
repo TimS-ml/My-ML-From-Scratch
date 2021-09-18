@@ -19,9 +19,14 @@ The ultimate goal is to achieve something like [numpy-ml](https://github.com/ddb
 # TODO
 - [ ] Add more models
   - [ ] Transformer
+  - [ ] VGG
   - [ ] Inception
   - [ ] Efficientnet
 - [ ] Resuce package usage
+  - [ ] Update `setup.py` to `setup_require` and `extras_require`
+- [ ] PyOpenCL or CuPy for Nvidia and AMD GPU
+  - Maybe M1 and Android GPU in the future...
+
 
 
 # From original repo
