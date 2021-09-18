@@ -1,6 +1,22 @@
-# Machine Learning From Scratch
+```
+                                                  d8b                                                     
+                                     d8P          ?88                                                     
+                                  d888888P         88b                                                    
+ .d888b, d8888b  88bd88b d888b8b    ?88'   d8888b  888888b                                                
+ ?8b,   d8P' `P  88P'  `d8P' ?88    88P   d8P' `P  88P `?8b                                               
+   `?8b 88b     d88     88b  ,88b   88b   88b     d88   88P                                               
+`?888P' `?888P'd88'     `?88P'`88b  `?8b  `?888P'd88'   88b   
+```
 
-## About
+# About this repo
+Folked from: https://github.com/eriklindernoren/ML-From-Scratch
+
+I want to run machine learning and deep leanring on iPad using ish shell, this is a good start.
+
+The ultimate goal is to achieve something like [numpy-ml](https://github.com/ddbourgin/numpy-ml) and [tinygrad](https://github.com/geohot/tinygrad)
+
+
+# From original repo
 Python implementations of some of the fundamental Machine Learning models and algorithms from scratch.
 
 The purpose of this project is not to produce as optimized and computationally efficient algorithms as possible
