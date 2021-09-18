@@ -8,6 +8,7 @@ from mlfromscratch.utils.data_manipulation import train_test_split
 from mlfromscratch.utils.data_operation import accuracy_score
 from mlfromscratch.utils import Plot
 
+
 def main():
     data = datasets.load_digits()
     X = data.data
@@ -30,7 +31,7 @@ def main():
     y_pred = clf.predict(X_test)
 
     accuracy = accuracy_score(y_test, y_pred)
-    print ("Accuracy:", accuracy)
+    print("Accuracy:", accuracy)
 
     # Reduce dimensions to 2d using pca and plot the results
     Plot().plot_in_2d(X_test, y_pred, title="Adaboost", accuracy=accuracy)

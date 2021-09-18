@@ -7,6 +7,7 @@ from mlfromscratch.utils import train_test_split, normalize, accuracy_score, Plo
 from mlfromscratch.utils.kernels import *
 from mlfromscratch.supervised_learning import SupportVectorMachine
 
+
 def main():
     data = datasets.load_iris()
     X = normalize(data.data[data.target != 0])
@@ -21,10 +22,13 @@ def main():
 
     accuracy = accuracy_score(y_test, y_pred)
 
-    print ("Accuracy:", accuracy)
+    print("Accuracy:", accuracy)
 
     # Reduce dimension to two using PCA and plot the results
-    Plot().plot_in_2d(X_test, y_pred, title="Support Vector Machine", accuracy=accuracy)
+    Plot().plot_in_2d(X_test,
+                      y_pred,
+                      title="Support Vector Machine",
+                      accuracy=accuracy)
 
 
 if __name__ == "__main__":

@@ -16,14 +16,14 @@ def main():
     time = np.atleast_2d(data["time"].values).T
     temp = data["temp"].values
 
-    X = time # fraction of the year [0, 1]
+    X = time  # fraction of the year [0, 1]
     y = temp
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
 
     poly_degree = 13
 
-    model = LassoRegression(degree=15, 
+    model = LassoRegression(degree=15,
                             reg_factor=0.05,
                             learning_rate=0.001,
                             n_iterations=4000)
@@ -31,7 +31,9 @@ def main():
 
     # Training error plot
     n = len(model.training_errors)
-    training, = plt.plot(range(n), model.training_errors, label="Training Error")
+    training, = plt.plot(range(n),
+                         model.training_errors,
+                         label="Training Error")
     plt.legend(handles=[training])
     plt.title("Error Plot")
     plt.ylabel('Mean Squared Error')
@@ -40,7 +42,7 @@ def main():
 
     y_pred = model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
-    print ("Mean squared error: %s (given by reg. factor: %s)" % (mse, 0.05))
+    print("Mean squared error: %s (given by reg. factor: %s)" % (mse, 0.05))
 
     y_pred_line = model.predict(X)
 
@@ -50,13 +52,18 @@ def main():
     # Plot the results
     m1 = plt.scatter(366 * X_train, y_train, color=cmap(0.9), s=10)
     m2 = plt.scatter(366 * X_test, y_test, color=cmap(0.5), s=10)
-    plt.plot(366 * X, y_pred_line, color='black', linewidth=2, label="Prediction")
+    plt.plot(366 * X,
+             y_pred_line,
+             color='black',
+             linewidth=2,
+             label="Prediction")
     plt.suptitle("Lasso Regression")
     plt.title("MSE: %.2f" % mse, fontsize=10)
     plt.xlabel('Day')
     plt.ylabel('Temperature in Celcius')
     plt.legend((m1, m2), ("Training data", "Test data"), loc='lower right')
     plt.show()
+
 
 if __name__ == "__main__":
     main()

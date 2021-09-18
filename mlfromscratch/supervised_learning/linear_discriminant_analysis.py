@@ -2,6 +2,7 @@ from __future__ import print_function, division
 import numpy as np
 from mlfromscratch.utils import calculate_covariance_matrix, normalize, standardize
 
+
 class LDA():
     """The Linear Discriminant Analysis classifier, also known as Fisher's linear discriminant.
     Can besides from classification also be used to reduce the dimensionaly of the dataset.

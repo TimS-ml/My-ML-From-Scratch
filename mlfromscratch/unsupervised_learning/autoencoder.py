@@ -22,7 +22,7 @@ class Autoencoder():
         self.img_rows = 28
         self.img_cols = 28
         self.img_dim = self.img_rows * self.img_cols
-        self.latent_dim = 128 # The dimension of the data embedding
+        self.latent_dim = 128  # The dimension of the data embedding
 
         optimizer = Adam(learning_rate=0.0002, b1=0.5)
         loss_function = SquareLoss
@@ -30,17 +30,18 @@ class Autoencoder():
         self.encoder = self.build_encoder(optimizer, loss_function)
         self.decoder = self.build_decoder(optimizer, loss_function)
 
-        self.autoencoder = NeuralNetwork(optimizer=optimizer, loss=loss_function)
+        self.autoencoder = NeuralNetwork(optimizer=optimizer,
+                                         loss=loss_function)
         self.autoencoder.layers.extend(self.encoder.layers)
         self.autoencoder.layers.extend(self.decoder.layers)
 
-        print ()
+        print()
         self.autoencoder.summary(name="Variational Autoencoder")
 
     def build_encoder(self, optimizer, loss_function):
 
         encoder = NeuralNetwork(optimizer=optimizer, loss=loss_function)
-        encoder.add(Dense(512, input_shape=(self.img_dim,)))
+        encoder.add(Dense(512, input_shape=(self.img_dim, )))
         encoder.add(Activation('leaky_relu'))
         encoder.add(BatchNormalization(momentum=0.8))
         encoder.add(Dense(256))
@@ -53,7 +54,7 @@ class Autoencoder():
     def build_decoder(self, optimizer, loss_function):
 
         decoder = NeuralNetwork(optimizer=optimizer, loss=loss_function)
-        decoder.add(Dense(256, input_shape=(self.latent_dim,)))
+        decoder.add(Dense(256, input_shape=(self.latent_dim, )))
         decoder.add(Activation('leaky_relu'))
         decoder.add(BatchNormalization(momentum=0.8))
         decoder.add(Dense(512))
@@ -84,19 +85,20 @@ class Autoencoder():
             loss, _ = self.autoencoder.train_on_batch(imgs, imgs)
 
             # Display the progress
-            print ("%d [D loss: %f]" % (epoch, loss))
+            print("%d [D loss: %f]" % (epoch, loss))
 
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
                 self.save_imgs(epoch, X)
 
     def save_imgs(self, epoch, X):
-        r, c = 5, 5 # Grid size
+        r, c = 5, 5  # Grid size
         # Select a random half batch of images
-        idx = np.random.randint(0, X.shape[0], r*c)
+        idx = np.random.randint(0, X.shape[0], r * c)
         imgs = X[idx]
         # Generate images and reshape to image shape
-        gen_imgs = self.autoencoder.predict(imgs).reshape((-1, self.img_rows, self.img_cols))
+        gen_imgs = self.autoencoder.predict(imgs).reshape(
+            (-1, self.img_rows, self.img_cols))
 
         # Rescale images 0 - 1
         gen_imgs = 0.5 * gen_imgs + 0.5
@@ -106,8 +108,8 @@ class Autoencoder():
         cnt = 0
         for i in range(r):
             for j in range(c):
-                axs[i,j].imshow(gen_imgs[cnt,:,:], cmap='gray')
-                axs[i,j].axis('off')
+                axs[i, j].imshow(gen_imgs[cnt, :, :], cmap='gray')
+                axs[i, j].axis('off')
                 cnt += 1
         fig.savefig("ae_%d.png" % epoch)
         plt.close()

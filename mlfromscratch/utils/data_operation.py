@@ -27,7 +27,7 @@ def calculate_variance(X):
     mean = np.ones(np.shape(X)) * X.mean(0)
     n_samples = np.shape(X)[0]
     variance = (1 / n_samples) * np.diag((X - mean).T.dot(X - mean))
-    
+
     return variance
 
 
@@ -57,10 +57,11 @@ def calculate_covariance_matrix(X, Y=None):
     if Y is None:
         Y = X
     n_samples = np.shape(X)[0]
-    covariance_matrix = (1 / (n_samples-1)) * (X - X.mean(axis=0)).T.dot(Y - Y.mean(axis=0))
+    covariance_matrix = (1 / (n_samples - 1)) * (
+        X - X.mean(axis=0)).T.dot(Y - Y.mean(axis=0))
 
     return np.array(covariance_matrix, dtype=float)
- 
+
 
 def calculate_correlation_matrix(X, Y=None):
     """ Calculate the correlation matrix for the dataset X """

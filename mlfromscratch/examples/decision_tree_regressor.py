@@ -7,9 +7,10 @@ from mlfromscratch.utils import train_test_split, standardize, accuracy_score
 from mlfromscratch.utils import mean_squared_error, calculate_variance, Plot
 from mlfromscratch.supervised_learning import RegressionTree
 
+
 def main():
 
-    print ("-- Regression Tree --")
+    print("-- Regression Tree --")
 
     # Load temperature data
     data = pd.read_csv('mlfromscratch/data/TempLinkoping2016.txt', sep="\t")
@@ -17,7 +18,7 @@ def main():
     time = np.atleast_2d(data["time"].values).T
     temp = np.atleast_2d(data["temp"].values).T
 
-    X = standardize(time)        # Time. Fraction of the year [0, 1]
+    X = standardize(time)  # Time. Fraction of the year [0, 1]
     y = temp[:, 0]  # Temperature. Reduce to one-dim
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
@@ -33,7 +34,7 @@ def main():
 
     mse = mean_squared_error(y_test, y_pred)
 
-    print ("Mean Squared Error:", mse)
+    print("Mean Squared Error:", mse)
 
     # Plot the results
     # Plot the results
@@ -44,7 +45,8 @@ def main():
     plt.title("MSE: %.2f" % mse, fontsize=10)
     plt.xlabel('Day')
     plt.ylabel('Temperature in Celcius')
-    plt.legend((m1, m2, m3), ("Training data", "Test data", "Prediction"), loc='lower right')
+    plt.legend((m1, m2, m3), ("Training data", "Test data", "Prediction"),
+               loc='lower right')
     plt.show()
 
 

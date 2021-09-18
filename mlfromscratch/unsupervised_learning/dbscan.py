@@ -83,8 +83,8 @@ class DBSCAN():
                 self.visited_samples.append(sample_i)
                 # Sample has more neighbors than self.min_samples => expand
                 # cluster from sample
-                new_cluster = self._expand_cluster(
-                    sample_i, self.neighbors[sample_i])
+                new_cluster = self._expand_cluster(sample_i,
+                                                   self.neighbors[sample_i])
                 # Add cluster to list of clusters
                 self.clusters.append(new_cluster)
 

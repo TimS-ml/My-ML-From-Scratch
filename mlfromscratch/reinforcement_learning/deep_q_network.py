@@ -25,7 +25,12 @@ class DeepQNetwork():
     min_epsilon: float
         The value which epsilon will approach as the training progresses.
     """
-    def __init__(self, env_name='CartPole-v1', epsilon=1, gamma=0.9, decay_rate=0.005, min_epsilon=0.1):
+    def __init__(self,
+                 env_name='CartPole-v1',
+                 epsilon=1,
+                 gamma=0.9,
+                 decay_rate=0.005,
+                 min_epsilon=0.1):
         self.epsilon = epsilon
         self.gamma = gamma
         self.decay_rate = decay_rate
@@ -37,7 +42,7 @@ class DeepQNetwork():
         self.env = gym.make(env_name)
         self.n_states = self.env.observation_space.shape[0]
         self.n_actions = self.env.action_space.n
-    
+
     def set_model(self, model):
         self.model = model(n_inputs=self.n_states, n_outputs=self.n_actions)
 
@@ -69,7 +74,7 @@ class DeepQNetwork():
         replay_size = len(replay)
         X = np.empty((replay_size, self.n_states))
         y = np.empty((replay_size, self.n_actions))
-        
+
         # Construct training set
         for i in range(replay_size):
             state_r, action_r, reward_r, new_state_r, done_r = replay[i]
@@ -117,17 +122,20 @@ class DeepQNetwork():
                 state = new_state
 
                 if done: break
-            
+
             epoch_loss = np.mean(epoch_loss)
 
             # Reduce the epsilon parameter
-            self.epsilon = self.min_epsilon + (1.0 - self.min_epsilon) * np.exp(-self.decay_rate * epoch)
-            
+            self.epsilon = self.min_epsilon + (
+                1.0 - self.min_epsilon) * np.exp(-self.decay_rate * epoch)
+
             max_reward = max(max_reward, total_reward)
 
-            print ("%d [Loss: %.4f, Reward: %s, Epsilon: %.4f, Max Reward: %s]" % (epoch, epoch_loss, total_reward, self.epsilon, max_reward))
+            print(
+                "%d [Loss: %.4f, Reward: %s, Epsilon: %.4f, Max Reward: %s]" %
+                (epoch, epoch_loss, total_reward, self.epsilon, max_reward))
 
-        print ("Training Finished")
+        print("Training Finished")
 
     def play(self, n_epochs):
         # self.env = gym.wrappers.Monitor(self.env, '/tmp/cartpole-experiment-1', force=True)
@@ -140,5 +148,5 @@ class DeepQNetwork():
                 state, reward, done, _ = self.env.step(action)
                 total_reward += reward
                 if done: break
-            print ("%d Reward: %s" % (epoch, total_reward))
+            print("%d Reward: %s" % (epoch, total_reward))
         self.env.close()

@@ -7,6 +7,7 @@ from mlfromscratch.utils import train_test_split, normalize, accuracy_score
 from mlfromscratch.utils import euclidean_distance, Plot
 from mlfromscratch.supervised_learning import KNN
 
+
 def main():
     data = datasets.load_iris()
     X = normalize(data.data)
@@ -15,13 +16,17 @@ def main():
 
     clf = KNN(k=5)
     y_pred = clf.predict(X_test, X_train, y_train)
-    
+
     accuracy = accuracy_score(y_test, y_pred)
 
-    print ("Accuracy:", accuracy)
+    print("Accuracy:", accuracy)
 
     # Reduce dimensions to 2d using pca and plot the results
-    Plot().plot_in_2d(X_test, y_pred, title="K Nearest Neighbors", accuracy=accuracy, legend_labels=data.target_names)
+    Plot().plot_in_2d(X_test,
+                      y_pred,
+                      title="K Nearest Neighbors",
+                      accuracy=accuracy,
+                      legend_labels=data.target_names)
 
 
 if __name__ == "__main__":

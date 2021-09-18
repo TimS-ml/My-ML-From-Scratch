@@ -43,14 +43,13 @@ class FPGrowth():
         support = count
         return support
 
-
     def _get_frequent_items(self, transactions):
         """ Returns a set of frequent items. An item is determined to
         be frequent if there are atleast min_sup transactions that contains
         it. """
         # Get all unique items in the transactions
-        unique_items = set(
-            item for transaction in transactions for item in transaction)
+        unique_items = set(item for transaction in transactions
+                           for item in transaction)
         items = []
         for item in unique_items:
             sup = self._calculate_support(item, transactions)
@@ -90,7 +89,9 @@ class FPGrowth():
         for transaction in transactions:
             # Remove items that are not frequent according to
             # unique_frequent_items
-            transaction = [item for item in transaction if item in unique_frequent_items]
+            transaction = [
+                item for item in transaction if item in unique_frequent_items
+            ]
             transaction.sort(key=lambda item: frequent_items.index([item]))
             self._insert_tree(root, transaction)
 
@@ -101,11 +102,10 @@ class FPGrowth():
         if not node:
             node = self.tree_root
         indent = "    " * indent_times
-        print ("%s%s:%s" % (indent, node.item, node.support))
+        print("%s%s:%s" % (indent, node.item, node.support))
         for child_key in node.children:
             child = node.children[child_key]
             self.print_tree(child, indent_times + 1)
-
 
     def _is_prefix(self, itemset, node):
         """ Makes sure that the first item in itemset is a child of node 
@@ -115,7 +115,6 @@ class FPGrowth():
                 return False
             node = node.children[item]
         return True
-
 
     def _determine_prefixes(self, itemset, node, prefixes=None):
         """ Recursive method that adds prefixes to the itemset by traversing the 
@@ -129,14 +128,18 @@ class FPGrowth():
             itemset_key = self._get_itemset_key(itemset)
             if not itemset_key in self.prefixes:
                 self.prefixes[itemset_key] = []
-            self.prefixes[itemset_key] += [{"prefix": prefixes, "support": node.children[itemset[0]].support}]
+            self.prefixes[itemset_key] += [{
+                "prefix":
+                prefixes,
+                "support":
+                node.children[itemset[0]].support
+            }]
 
         for child_key in node.children:
             child = node.children[child_key]
             # Recursive call with child as new node. Add the child item as potential
             # prefix.
             self._determine_prefixes(itemset, child, prefixes + [child.item])
-
 
     def _get_itemset_key(self, itemset):
         """ Determines the look of the hashmap key for self.prefixes
@@ -155,7 +158,8 @@ class FPGrowth():
         cond_tree = None
 
         if suffix:
-            cond_tree = self._construct_tree(conditional_database, frequent_items)
+            cond_tree = self._construct_tree(conditional_database,
+                                             frequent_items)
             # Output new frequent itemset as the suffix added to the frequent
             # items
             self.frequent_itemsets += [el + suffix for el in frequent_items]
@@ -180,18 +184,21 @@ class FPGrowth():
                         conditional_database.append(el["prefix"])
                 # Create new suffix
                 new_suffix = itemset + suffix if suffix else itemset
-                self._determine_frequent_itemsets(conditional_database, suffix=new_suffix)
+                self._determine_frequent_itemsets(conditional_database,
+                                                  suffix=new_suffix)
 
-    def find_frequent_itemsets(self, transactions, suffix=None, show_tree=False):
+    def find_frequent_itemsets(self,
+                               transactions,
+                               suffix=None,
+                               show_tree=False):
         self.transactions = transactions
 
         # Build the FP Growth Tree
         self.tree_root = self._construct_tree(transactions)
         if show_tree:
-            print ("FP-Growth Tree:")
+            print("FP-Growth Tree:")
             self.print_tree(self.tree_root)
 
         self._determine_frequent_itemsets(transactions, suffix=None)
 
         return self.frequent_itemsets
-

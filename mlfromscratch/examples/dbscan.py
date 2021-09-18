@@ -9,6 +9,7 @@ import numpy as np
 from mlfromscratch.utils import Plot
 from mlfromscratch.unsupervised_learning import DBSCAN
 
+
 def main():
     # Load the dataset
     X, y = datasets.make_moons(n_samples=300, noise=0.08, shuffle=False)
@@ -21,6 +22,7 @@ def main():
     p = Plot()
     p.plot_in_2d(X, y_pred, title="DBSCAN")
     p.plot_in_2d(X, y, title="Actual Clustering")
+
 
 if __name__ == "__main__":
     main()

@@ -51,16 +51,20 @@ class XGBoost(object):
     max_depth: int
         The maximum depth of a tree.
     """
-    def __init__(self, n_estimators=200, learning_rate=0.001, min_samples_split=2,
-                 min_impurity=1e-7, max_depth=2):
-        self.n_estimators = n_estimators            # Number of trees
-        self.learning_rate = learning_rate          # Step size for weight update
+    def __init__(self,
+                 n_estimators=200,
+                 learning_rate=0.001,
+                 min_samples_split=2,
+                 min_impurity=1e-7,
+                 max_depth=2):
+        self.n_estimators = n_estimators  # Number of trees
+        self.learning_rate = learning_rate  # Step size for weight update
         self.min_samples_split = min_samples_split  # The minimum n of sampels to justify split
-        self.min_impurity = min_impurity              # Minimum variance reduction to continue
-        self.max_depth = max_depth                  # Maximum depth for tree
+        self.min_impurity = min_impurity  # Minimum variance reduction to continue
+        self.max_depth = max_depth  # Maximum depth for tree
 
         self.bar = progressbar.ProgressBar(widgets=bar_widgets)
-        
+
         # Log loss for classification
         self.loss = LogisticLoss()
 
@@ -68,10 +72,10 @@ class XGBoost(object):
         self.trees = []
         for _ in range(n_estimators):
             tree = XGBoostRegressionTree(
-                    min_samples_split=self.min_samples_split,
-                    min_impurity=min_impurity,
-                    max_depth=self.max_depth,
-                    loss=self.loss)
+                min_samples_split=self.min_samples_split,
+                min_impurity=min_impurity,
+                max_depth=self.max_depth,
+                loss=self.loss)
 
             self.trees.append(tree)
 

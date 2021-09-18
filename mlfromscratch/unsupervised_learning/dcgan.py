@@ -12,7 +12,7 @@ from mlfromscratch.deep_learning import NeuralNetwork
 
 class DCGAN():
     def __init__(self):
-        self.img_rows = 28 
+        self.img_rows = 28
         self.img_cols = 28
         self.channels = 1
         self.img_shape = (self.channels, self.img_rows, self.img_cols)
@@ -32,48 +32,53 @@ class DCGAN():
         self.combined.layers.extend(self.generator.layers)
         self.combined.layers.extend(self.discriminator.layers)
 
-        print ()
+        print()
         self.generator.summary(name="Generator")
         self.discriminator.summary(name="Discriminator")
 
     def build_generator(self, optimizer, loss_function):
-        
+
         model = NeuralNetwork(optimizer=optimizer, loss=loss_function)
 
-        model.add(Dense(128 * 7 * 7, input_shape=(100,)))
+        model.add(Dense(128 * 7 * 7, input_shape=(100, )))
         model.add(Activation('leaky_relu'))
         model.add(Reshape((128, 7, 7)))
         model.add(BatchNormalization(momentum=0.8))
         model.add(UpSampling2D())
-        model.add(Conv2D(128, filter_shape=(3,3), padding='same'))
+        model.add(Conv2D(128, filter_shape=(3, 3), padding='same'))
         model.add(Activation("leaky_relu"))
         model.add(BatchNormalization(momentum=0.8))
         model.add(UpSampling2D())
-        model.add(Conv2D(64, filter_shape=(3,3), padding='same'))
+        model.add(Conv2D(64, filter_shape=(3, 3), padding='same'))
         model.add(Activation("leaky_relu"))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(1, filter_shape=(3,3), padding='same'))
+        model.add(Conv2D(1, filter_shape=(3, 3), padding='same'))
         model.add(Activation("tanh"))
 
         return model
 
     def build_discriminator(self, optimizer, loss_function):
-        
+
         model = NeuralNetwork(optimizer=optimizer, loss=loss_function)
 
-        model.add(Conv2D(32, filter_shape=(3,3), stride=2, input_shape=self.img_shape, padding='same'))
+        model.add(
+            Conv2D(32,
+                   filter_shape=(3, 3),
+                   stride=2,
+                   input_shape=self.img_shape,
+                   padding='same'))
         model.add(Activation('leaky_relu'))
         model.add(Dropout(0.25))
-        model.add(Conv2D(64, filter_shape=(3,3), stride=2, padding='same'))
-        model.add(ZeroPadding2D(padding=((0,1),(0,1))))
+        model.add(Conv2D(64, filter_shape=(3, 3), stride=2, padding='same'))
+        model.add(ZeroPadding2D(padding=((0, 1), (0, 1))))
         model.add(Activation('leaky_relu'))
         model.add(Dropout(0.25))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(128, filter_shape=(3,3), stride=2, padding='same'))
+        model.add(Conv2D(128, filter_shape=(3, 3), stride=2, padding='same'))
         model.add(Activation('leaky_relu'))
         model.add(Dropout(0.25))
         model.add(BatchNormalization(momentum=0.8))
-        model.add(Conv2D(256, filter_shape=(3,3), stride=1, padding='same'))
+        model.add(Conv2D(256, filter_shape=(3, 3), stride=1, padding='same'))
         model.add(Activation('leaky_relu'))
         model.add(Dropout(0.25))
         model.add(Flatten())
@@ -82,12 +87,11 @@ class DCGAN():
 
         return model
 
-
     def train(self, epochs, batch_size=128, save_interval=50):
 
         mnist = fetch_mldata('MNIST original')
 
-        X = mnist.data.reshape((-1,) + self.img_shape)
+        X = mnist.data.reshape((-1, ) + self.img_shape)
         y = mnist.target
 
         # Rescale -1 to 1
@@ -113,15 +117,20 @@ class DCGAN():
             # Generate a half batch of images
             gen_imgs = self.generator.predict(noise)
 
-            valid = np.concatenate((np.ones((half_batch, 1)), np.zeros((half_batch, 1))), axis=1)
-            fake = np.concatenate((np.zeros((half_batch, 1)), np.ones((half_batch, 1))), axis=1)
+            valid = np.concatenate((np.ones(
+                (half_batch, 1)), np.zeros((half_batch, 1))),
+                                   axis=1)
+            fake = np.concatenate((np.zeros(
+                (half_batch, 1)), np.ones((half_batch, 1))),
+                                  axis=1)
 
             # Train the discriminator
-            d_loss_real, d_acc_real = self.discriminator.train_on_batch(imgs, valid)
-            d_loss_fake, d_acc_fake = self.discriminator.train_on_batch(gen_imgs, fake)
+            d_loss_real, d_acc_real = self.discriminator.train_on_batch(
+                imgs, valid)
+            d_loss_fake, d_acc_fake = self.discriminator.train_on_batch(
+                gen_imgs, fake)
             d_loss = 0.5 * (d_loss_real + d_loss_fake)
             d_acc = 0.5 * (d_acc_real + d_acc_fake)
-
 
             # ---------------------
             #  Train Generator
@@ -134,13 +143,16 @@ class DCGAN():
             noise = np.random.normal(0, 1, (batch_size, self.latent_dim))
 
             # The generator wants the discriminator to label the generated samples as valid
-            valid = np.concatenate((np.ones((batch_size, 1)), np.zeros((batch_size, 1))), axis=1)
+            valid = np.concatenate((np.ones(
+                (batch_size, 1)), np.zeros((batch_size, 1))),
+                                   axis=1)
 
             # Train the generator
             g_loss, g_acc = self.combined.train_on_batch(noise, valid)
 
             # Display the progress
-            print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, acc: %.2f%%]" % (epoch, d_loss, 100*d_acc, g_loss, 100*g_acc))
+            print("%d [D loss: %f, acc: %.2f%%] [G loss: %f, acc: %.2f%%]" %
+                  (epoch, d_loss, 100 * d_acc, g_loss, 100 * g_acc))
 
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
@@ -159,8 +171,8 @@ class DCGAN():
         cnt = 0
         for i in range(r):
             for j in range(c):
-                axs[i,j].imshow(gen_imgs[cnt,0,:,:], cmap='gray')
-                axs[i,j].axis('off')
+                axs[i, j].imshow(gen_imgs[cnt, 0, :, :], cmap='gray')
+                axs[i, j].axis('off')
                 cnt += 1
         fig.savefig("mnist_%d.png" % epoch)
         plt.close()
@@ -169,5 +181,3 @@ class DCGAN():
 if __name__ == '__main__':
     dcgan = DCGAN()
     dcgan.train(epochs=200000, batch_size=64, save_interval=50)
-
-

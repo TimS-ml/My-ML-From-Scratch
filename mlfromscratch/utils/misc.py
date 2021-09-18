@@ -10,12 +10,15 @@ from mlfromscratch.utils.data_operation import calculate_correlation_matrix
 from mlfromscratch.utils.data_manipulation import standardize
 
 bar_widgets = [
-    'Training: ', progressbar.Percentage(), ' ', progressbar.Bar(marker="-", left="[", right="]"),
-    ' ', progressbar.ETA()
+    'Training: ',
+    progressbar.Percentage(), ' ',
+    progressbar.Bar(marker="-", left="[", right="]"), ' ',
+    progressbar.ETA()
 ]
 
+
 class Plot():
-    def __init__(self): 
+    def __init__(self):
         self.cmap = plt.get_cmap('viridis')
 
     def _transform(self, X, dim):
@@ -30,19 +33,33 @@ class Plot():
 
         return X_transformed
 
+    def plot_regression(self,
+                        lines,
+                        title,
+                        axis_labels=None,
+                        mse=None,
+                        scatter=None,
+                        legend={
+                            "type": "lines",
+                            "loc": "lower right"
+                        }):
 
-    def plot_regression(self, lines, title, axis_labels=None, mse=None, scatter=None, legend={"type": "lines", "loc": "lower right"}):
-        
         if scatter:
             scatter_plots = scatter_labels = []
             for s in scatter:
-                scatter_plots += [plt.scatter(s["x"], s["y"], color=s["color"], s=s["size"])]
+                scatter_plots += [
+                    plt.scatter(s["x"], s["y"], color=s["color"], s=s["size"])
+                ]
                 scatter_labels += [s["label"]]
             scatter_plots = tuple(scatter_plots)
             scatter_labels = tuple(scatter_labels)
 
         for l in lines:
-            li = plt.plot(l["x"], l["y"], color=s["color"], linewidth=l["width"], label=l["label"])
+            li = plt.plot(l["x"],
+                          l["y"],
+                          color=s["color"],
+                          linewidth=l["width"],
+                          label=l["label"])
 
         if mse:
             plt.suptitle(title)
@@ -61,10 +78,13 @@ class Plot():
 
         plt.show()
 
-
-
     # Plot the dataset X and the corresponding labels y in 2D using PCA.
-    def plot_in_2d(self, X, y=None, title=None, accuracy=None, legend_labels=None):
+    def plot_in_2d(self,
+                   X,
+                   y=None,
+                   title=None,
+                   accuracy=None,
+                   legend_labels=None):
         X_transformed = self._transform(X, dim=2)
         x1 = X_transformed[:, 0]
         x2 = X_transformed[:, 1]
@@ -82,7 +102,7 @@ class Plot():
             class_distr.append(plt.scatter(_x1, _x2, color=colors[i]))
 
         # Plot legend
-        if not legend_labels is None: 
+        if not legend_labels is None:
             plt.legend(class_distr, legend_labels, loc=1)
 
         # Plot title
@@ -110,5 +130,3 @@ class Plot():
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter(x1, x2, x3, c=y)
         plt.show()
-
-

@@ -2,6 +2,7 @@ from __future__ import print_function, division
 import string
 import numpy as np
 
+
 class GeneticAlgorithm():
     """An implementation of a Genetic Algorithm which will try to produce the user
     specified target string.
@@ -27,7 +28,8 @@ class GeneticAlgorithm():
         self.population = []
         for _ in range(self.population_size):
             # Select random letters as new individual
-            individual = "".join(np.random.choice(self.letters, size=len(self.target)))
+            individual = "".join(
+                np.random.choice(self.letters, size=len(self.target)))
             self.population.append(individual)
 
     def _calculate_fitness(self):
@@ -80,25 +82,26 @@ class GeneticAlgorithm():
 
             # Set the probability that the individual should be selected as a parent
             # proportionate to the individual's fitness.
-            parent_probabilities = [fitness / sum(population_fitness) for fitness in population_fitness]
+            parent_probabilities = [
+                fitness / sum(population_fitness)
+                for fitness in population_fitness
+            ]
 
             # Determine the next generation
             new_population = []
             for i in np.arange(0, self.population_size, 2):
                 # Select two parents randomly according to probabilities
-                parent1, parent2 = np.random.choice(self.population, size=2, p=parent_probabilities, replace=False)
+                parent1, parent2 = np.random.choice(self.population,
+                                                    size=2,
+                                                    p=parent_probabilities,
+                                                    replace=False)
                 # Perform crossover to produce offspring
                 child1, child2 = self._crossover(parent1, parent2)
                 # Save mutated offspring for next generation
                 new_population += [self._mutate(child1), self._mutate(child2)]
 
-            print ("[%d Closest Candidate: '%s', Fitness: %.2f]" % (epoch, fittest_individual, highest_fitness))
+            print("[%d Closest Candidate: '%s', Fitness: %.2f]" %
+                  (epoch, fittest_individual, highest_fitness))
             self.population = new_population
 
-        print ("[%d Answer: '%s']" % (epoch, fittest_individual))
-
-
-
-
-
-
+        print("[%d Answer: '%s']" % (epoch, fittest_individual))

@@ -2,6 +2,7 @@ from __future__ import print_function, division
 import numpy as np
 import copy
 
+
 class ParticleSwarmOptimizedNN():
     """ Particle Swarm Optimization of Neural Network.
 
@@ -21,12 +22,13 @@ class ParticleSwarmOptimizedNN():
         Neural Network Training Using Particle Swarm Optimization
         https://visualstudiomagazine.com/articles/2013/12/01/neural-network-training-using-particle-swarm-optimization.aspx 
     """
-    def __init__(self, population_size, 
-                        model_builder, 
-                        inertia_weight=0.8, 
-                        cognitive_weight=2, 
-                        social_weight=2, 
-                        max_velocity=20):
+    def __init__(self,
+                 population_size,
+                 model_builder,
+                 inertia_weight=0.8,
+                 cognitive_weight=2,
+                 social_weight=2,
+                 max_velocity=20):
         self.population_size = population_size
         self.model_builder = model_builder
         self.best_individual = None
@@ -39,7 +41,8 @@ class ParticleSwarmOptimizedNN():
 
     def _build_model(self, id):
         """ Returns a new individual """
-        model = self.model_builder(n_inputs=self.X.shape[1], n_outputs=self.y.shape[1])
+        model = self.model_builder(n_inputs=self.X.shape[1],
+                                   n_outputs=self.y.shape[1])
         model.id = id
         model.fitness = 0
         model.highest_fitness = 0
@@ -52,7 +55,10 @@ class ParticleSwarmOptimizedNN():
         for layer in model.layers:
             velocity = {"W": 0, "w0": 0}
             if hasattr(layer, 'W'):
-                velocity = {"W": np.zeros_like(layer.W), "w0": np.zeros_like(layer.w0)}
+                velocity = {
+                    "W": np.zeros_like(layer.W),
+                    "w0": np.zeros_like(layer.w0)
+                }
             model.velocity.append(velocity)
 
         return model
@@ -73,22 +79,28 @@ class ParticleSwarmOptimizedNN():
             if hasattr(layer, 'W'):
                 # Layer weights velocity
                 first_term_W = self.inertia_w * individual.velocity[i]["W"]
-                second_term_W = self.cognitive_w * r1 * (individual.best_layers[i].W - layer.W)
-                third_term_W = self.social_w * r2 * (self.best_individual.layers[i].W - layer.W)
+                second_term_W = self.cognitive_w * r1 * (
+                    individual.best_layers[i].W - layer.W)
+                third_term_W = self.social_w * r2 * (
+                    self.best_individual.layers[i].W - layer.W)
                 new_velocity = first_term_W + second_term_W + third_term_W
-                individual.velocity[i]["W"] = np.clip(new_velocity, self.min_v, self.max_v)
+                individual.velocity[i]["W"] = np.clip(new_velocity, self.min_v,
+                                                      self.max_v)
 
                 # Bias weight velocity
                 first_term_w0 = self.inertia_w * individual.velocity[i]["w0"]
-                second_term_w0 = self.cognitive_w * r1 * (individual.best_layers[i].w0 - layer.w0)
-                third_term_w0 = self.social_w * r2 * (self.best_individual.layers[i].w0 - layer.w0)
+                second_term_w0 = self.cognitive_w * r1 * (
+                    individual.best_layers[i].w0 - layer.w0)
+                third_term_w0 = self.social_w * r2 * (
+                    self.best_individual.layers[i].w0 - layer.w0)
                 new_velocity = first_term_w0 + second_term_w0 + third_term_w0
-                individual.velocity[i]["w0"] = np.clip(new_velocity, self.min_v, self.max_v)
+                individual.velocity[i]["w0"] = np.clip(new_velocity,
+                                                       self.min_v, self.max_v)
 
                 # Update layer weights with velocity
                 individual.layers[i].W += individual.velocity[i]["W"]
                 individual.layers[i].w0 += individual.velocity[i]["w0"]
-        
+
     def _calculate_fitness(self, individual):
         """ Evaluate the individual on the test set to get fitness scores """
         loss, acc = individual.test_on_batch(self.X, self.y)
@@ -121,9 +133,9 @@ class ParticleSwarmOptimizedNN():
                 if individual.fitness > self.best_individual.fitness:
                     self.best_individual = copy.copy(individual)
 
-            print ("[%d Best Individual - ID: %d Fitness: %.5f, Accuracy: %.1f%%]" % (epoch,
-                                                                            self.best_individual.id,
-                                                                            self.best_individual.fitness,
-                                                                            100*float(self.best_individual.accuracy)))
+            print(
+                "[%d Best Individual - ID: %d Fitness: %.5f, Accuracy: %.1f%%]"
+                %
+                (epoch, self.best_individual.id, self.best_individual.fitness,
+                 100 * float(self.best_individual.accuracy)))
         return self.best_individual
-

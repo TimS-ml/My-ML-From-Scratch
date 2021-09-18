@@ -20,7 +20,7 @@ class GAN():
     Training Data: MNIST Handwritten Digits (28x28 images)
     """
     def __init__(self):
-        self.img_rows = 28 
+        self.img_rows = 28
         self.img_cols = 28
         self.img_dim = self.img_rows * self.img_cols
         self.latent_dim = 100
@@ -39,15 +39,15 @@ class GAN():
         self.combined.layers.extend(self.generator.layers)
         self.combined.layers.extend(self.discriminator.layers)
 
-        print ()
+        print()
         self.generator.summary(name="Generator")
         self.discriminator.summary(name="Discriminator")
 
     def build_generator(self, optimizer, loss_function):
-        
+
         model = NeuralNetwork(optimizer=optimizer, loss=loss_function)
 
-        model.add(Dense(256, input_shape=(self.latent_dim,)))
+        model.add(Dense(256, input_shape=(self.latent_dim, )))
         model.add(Activation('leaky_relu'))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Dense(512))
@@ -62,10 +62,10 @@ class GAN():
         return model
 
     def build_discriminator(self, optimizer, loss_function):
-        
+
         model = NeuralNetwork(optimizer=optimizer, loss=loss_function)
 
-        model.add(Dense(512, input_shape=(self.img_dim,)))
+        model.add(Dense(512, input_shape=(self.img_dim, )))
         model.add(Activation('leaky_relu'))
         model.add(Dropout(0.5))
         model.add(Dense(256))
@@ -107,15 +107,20 @@ class GAN():
             gen_imgs = self.generator.predict(noise)
 
             # Valid = [1, 0], Fake = [0, 1]
-            valid = np.concatenate((np.ones((half_batch, 1)), np.zeros((half_batch, 1))), axis=1)
-            fake = np.concatenate((np.zeros((half_batch, 1)), np.ones((half_batch, 1))), axis=1)
+            valid = np.concatenate((np.ones(
+                (half_batch, 1)), np.zeros((half_batch, 1))),
+                                   axis=1)
+            fake = np.concatenate((np.zeros(
+                (half_batch, 1)), np.ones((half_batch, 1))),
+                                  axis=1)
 
             # Train the discriminator
-            d_loss_real, d_acc_real = self.discriminator.train_on_batch(imgs, valid)
-            d_loss_fake, d_acc_fake = self.discriminator.train_on_batch(gen_imgs, fake)
+            d_loss_real, d_acc_real = self.discriminator.train_on_batch(
+                imgs, valid)
+            d_loss_fake, d_acc_fake = self.discriminator.train_on_batch(
+                gen_imgs, fake)
             d_loss = 0.5 * (d_loss_real + d_loss_fake)
             d_acc = 0.5 * (d_acc_real + d_acc_fake)
-
 
             # ---------------------
             #  Train Generator
@@ -128,23 +133,27 @@ class GAN():
             noise = np.random.normal(0, 1, (batch_size, self.latent_dim))
 
             # The generator wants the discriminator to label the generated samples as valid
-            valid = np.concatenate((np.ones((batch_size, 1)), np.zeros((batch_size, 1))), axis=1)
+            valid = np.concatenate((np.ones(
+                (batch_size, 1)), np.zeros((batch_size, 1))),
+                                   axis=1)
 
             # Train the generator
             g_loss, g_acc = self.combined.train_on_batch(noise, valid)
 
             # Display the progress
-            print ("%d [D loss: %f, acc: %.2f%%] [G loss: %f, acc: %.2f%%]" % (epoch, d_loss, 100*d_acc, g_loss, 100*g_acc))
+            print("%d [D loss: %f, acc: %.2f%%] [G loss: %f, acc: %.2f%%]" %
+                  (epoch, d_loss, 100 * d_acc, g_loss, 100 * g_acc))
 
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
                 self.save_imgs(epoch)
 
     def save_imgs(self, epoch):
-        r, c = 5, 5 # Grid size
+        r, c = 5, 5  # Grid size
         noise = np.random.normal(0, 1, (r * c, self.latent_dim))
         # Generate images and reshape to image shape
-        gen_imgs = self.generator.predict(noise).reshape((-1, self.img_rows, self.img_cols))
+        gen_imgs = self.generator.predict(noise).reshape(
+            (-1, self.img_rows, self.img_cols))
 
         # Rescale images 0 - 1
         gen_imgs = 0.5 * gen_imgs + 0.5
@@ -154,8 +163,8 @@ class GAN():
         cnt = 0
         for i in range(r):
             for j in range(c):
-                axs[i,j].imshow(gen_imgs[cnt,:,:], cmap='gray')
-                axs[i,j].axis('off')
+                axs[i, j].imshow(gen_imgs[cnt, :, :], cmap='gray')
+                axs[i, j].axis('off')
                 cnt += 1
         fig.savefig("mnist_%d.png" % epoch)
         plt.close()
@@ -164,5 +173,3 @@ class GAN():
 if __name__ == '__main__':
     gan = GAN()
     gan.train(n_epochs=200000, batch_size=64, save_interval=400)
-
-

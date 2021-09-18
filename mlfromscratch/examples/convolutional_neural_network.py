@@ -1,4 +1,3 @@
-
 from __future__ import print_function
 from sklearn import datasets
 import matplotlib.pyplot as plt
@@ -17,7 +16,6 @@ from mlfromscratch.deep_learning.layers import Dense, Dropout, Conv2D, Flatten, 
 from mlfromscratch.deep_learning.layers import AveragePooling2D, ZeroPadding2D, BatchNormalization, RNN
 
 
-
 def main():
 
     #----------
@@ -33,21 +31,30 @@ def main():
     # Convert to one-hot encoding
     y = to_categorical(y.astype("int"))
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, seed=1)
+    X_train, X_test, y_train, y_test = train_test_split(X,
+                                                        y,
+                                                        test_size=0.4,
+                                                        seed=1)
 
     # Reshape X to (n_samples, channels, height, width)
-    X_train = X_train.reshape((-1,1,8,8))
-    X_test = X_test.reshape((-1,1,8,8))
+    X_train = X_train.reshape((-1, 1, 8, 8))
+    X_test = X_test.reshape((-1, 1, 8, 8))
 
     clf = NeuralNetwork(optimizer=optimizer,
                         loss=CrossEntropy,
                         validation_data=(X_test, y_test))
 
-    clf.add(Conv2D(n_filters=16, filter_shape=(3,3), stride=1, input_shape=(1,8,8), padding='same'))
+    clf.add(
+        Conv2D(n_filters=16,
+               filter_shape=(3, 3),
+               stride=1,
+               input_shape=(1, 8, 8),
+               padding='same'))
     clf.add(Activation('relu'))
     clf.add(Dropout(0.25))
     clf.add(BatchNormalization())
-    clf.add(Conv2D(n_filters=32, filter_shape=(3,3), stride=1, padding='same'))
+    clf.add(Conv2D(n_filters=32, filter_shape=(3, 3), stride=1,
+                   padding='same'))
     clf.add(Activation('relu'))
     clf.add(Dropout(0.25))
     clf.add(BatchNormalization())
@@ -59,7 +66,7 @@ def main():
     clf.add(Dense(10))
     clf.add(Activation('softmax'))
 
-    print ()
+    print()
     clf.summary(name="ConvNet")
 
     train_err, val_err = clf.fit(X_train, y_train, n_epochs=50, batch_size=256)
@@ -75,13 +82,17 @@ def main():
     plt.show()
 
     _, accuracy = clf.test_on_batch(X_test, y_test)
-    print ("Accuracy:", accuracy)
-
+    print("Accuracy:", accuracy)
 
     y_pred = np.argmax(clf.predict(X_test), axis=1)
-    X_test = X_test.reshape(-1, 8*8)
+    X_test = X_test.reshape(-1, 8 * 8)
     # Reduce dimension to 2D using PCA and plot the results
-    Plot().plot_in_2d(X_test, y_pred, title="Convolutional Neural Network", accuracy=accuracy, legend_labels=range(10))
+    Plot().plot_in_2d(X_test,
+                      y_pred,
+                      title="Convolutional Neural Network",
+                      accuracy=accuracy,
+                      legend_labels=range(10))
+
 
 if __name__ == "__main__":
     main()

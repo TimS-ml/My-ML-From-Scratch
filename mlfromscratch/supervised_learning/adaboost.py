@@ -8,6 +8,7 @@ import pandas as pd
 # Import helper functions
 from mlfromscratch.utils import train_test_split, accuracy_score, Plot
 
+
 # Decision stump used as weak classifier in this impl. of Adaboost
 class DecisionStump():
     def __init__(self):
@@ -19,6 +20,7 @@ class DecisionStump():
         self.threshold = None
         # Value indicative of the classifier's accuracy
         self.alpha = None
+
 
 class Adaboost():
     """Boosting method that uses a number of weak classifiers in 
@@ -38,7 +40,7 @@ class Adaboost():
 
         # Initialize weights to 1/N
         w = np.full(n_samples, (1 / n_samples))
-        
+
         self.clfs = []
         # Iterate through classifiers
         for _ in range(self.n_clf):
@@ -60,7 +62,7 @@ class Adaboost():
                     prediction[X[:, feature_i] < threshold] = -1
                     # Error = sum of weights of misclassified samples
                     error = sum(w[y != prediction])
-                    
+
                     # If the error is over 50% we flip the polarity so that samples that
                     # were classified as 0 are classified as 1, and vice versa
                     # E.g error = 0.8 => (1 - error) = 0.2
@@ -81,10 +83,11 @@ class Adaboost():
             # Set all predictions to '1' initially
             predictions = np.ones(np.shape(y))
             # The indexes where the sample values are below threshold
-            negative_idx = (clf.polarity * X[:, clf.feature_index] < clf.polarity * clf.threshold)
+            negative_idx = (clf.polarity * X[:, clf.feature_index] <
+                            clf.polarity * clf.threshold)
             # Label those as '-1'
             predictions[negative_idx] = -1
-            # Calculate new weights 
+            # Calculate new weights
             # Missclassified samples gets larger weights and correctly classified samples smaller
             w *= np.exp(-clf.alpha * y * predictions)
             # Normalize to one
@@ -101,7 +104,8 @@ class Adaboost():
             # Set all predictions to '1' initially
             predictions = np.ones(np.shape(y_pred))
             # The indexes where the sample values are below threshold
-            negative_idx = (clf.polarity * X[:, clf.feature_index] < clf.polarity * clf.threshold)
+            negative_idx = (clf.polarity * X[:, clf.feature_index] <
+                            clf.polarity * clf.threshold)
             # Label those as '-1'
             predictions[negative_idx] = -1
             # Add predictions weighted by the classifiers alpha
@@ -136,7 +140,7 @@ def main():
     y_pred = clf.predict(X_test)
 
     accuracy = accuracy_score(y_test, y_pred)
-    print ("Accuracy:", accuracy)
+    print("Accuracy:", accuracy)
 
     # Reduce dimensions to 2d using pca and plot the results
     Plot().plot_in_2d(X_test, y_pred, title="Adaboost", accuracy=accuracy)

@@ -62,7 +62,6 @@ class MultiClassLDA():
 
         return X_transformed
 
-
     def plot_in_2d(self, X, y, title=None):
         """ Plot the dataset X and the corresponding labels y in 2D using the LDA
         transformation."""

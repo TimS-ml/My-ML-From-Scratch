@@ -11,14 +11,18 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     all_reqs = f.read().split('\n')
 
 install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
-dependency_links = [x.strip().replace('git+', '') for x in all_reqs if x.startswith('git+')]
+dependency_links = [
+    x.strip().replace('git+', '') for x in all_reqs if x.startswith('git+')
+]
 
 setup(
     name='mlfromscratch',
     version=__version__,
-    description='Python implementations of some of the fundamental Machine Learning models and algorithms from scratch.',
+    description=
+    'Python implementations of some of the fundamental Machine Learning models and algorithms from scratch.',
     url='https://github.com/eriklindernoren/ML-From-Scratch',
-    download_url='https://github.com/eriklindernoren/ML-From-Scratch/tarball/master',
+    download_url=
+    'https://github.com/eriklindernoren/ML-From-Scratch/tarball/master',
     license='MIT',
     packages=find_packages(),
     include_package_data=True,
@@ -26,5 +30,4 @@ setup(
     install_requires=install_requires,
     setup_requires=['numpy>=1.10', 'scipy>=0.17'],
     dependency_links=dependency_links,
-    author_email='eriklindernoren@gmail.com'
-)
+    author_email='eriklindernoren@gmail.com')

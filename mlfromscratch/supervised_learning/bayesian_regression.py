@@ -4,7 +4,6 @@ from scipy.stats import chi2, multivariate_normal
 from mlfromscratch.utils import mean_squared_error, train_test_split, polynomial_features
 
 
-
 class BayesianRegression(object):
     """Bayesian regression model. If poly_degree is specified the features will
     be transformed to with a polynomial basis function, which allows for polynomial
@@ -33,7 +32,14 @@ class BayesianRegression(object):
     Reference:
         https://github.com/mattiasvillani/BayesLearnCourse/raw/master/Slides/BayesLearnL5.pdf
     """
-    def __init__(self, n_draws, mu0, omega0, nu0, sigma_sq0, poly_degree=0, cred_int=95):
+    def __init__(self,
+                 n_draws,
+                 mu0,
+                 omega0,
+                 nu0,
+                 sigma_sq0,
+                 poly_degree=0,
+                 cred_int=95):
         self.w = None
         self.n_draws = n_draws
         self.poly_degree = poly_degree
@@ -72,7 +78,8 @@ class BayesianRegression(object):
         # conjugate priors for the likelihoods.
 
         # Normal prior / likelihood => Normal posterior
-        mu_n = np.linalg.pinv(X_X + self.omega0).dot(X_X.dot(beta_hat)+self.omega0.dot(self.mu0))
+        mu_n = np.linalg.pinv(X_X + self.omega0).dot(
+            X_X.dot(beta_hat) + self.omega0.dot(self.mu0))
         omega_n = X_X + self.omega0
         # Scaled inverse chi-squared prior / likelihood => Scaled inverse chi-squared posterior
         nu_n = self.nu0 + n_samples
@@ -82,8 +89,13 @@ class BayesianRegression(object):
         # Simulate parameter values for n_draws
         beta_draws = np.empty((self.n_draws, n_features))
         for i in range(self.n_draws):
-            sigma_sq = self._draw_scaled_inv_chi_sq(n=1, df=nu_n, scale=sigma_sq_n)
-            beta = multivariate_normal.rvs(size=1, mean=mu_n[:,0], cov=sigma_sq*np.linalg.pinv(omega_n))
+            sigma_sq = self._draw_scaled_inv_chi_sq(n=1,
+                                                    df=nu_n,
+                                                    scale=sigma_sq_n)
+            beta = multivariate_normal.rvs(size=1,
+                                           mean=mu_n[:, 0],
+                                           cov=sigma_sq *
+                                           np.linalg.pinv(omega_n))
             # Save parameter draws
             beta_draws[i, :] = beta
 
@@ -91,8 +103,8 @@ class BayesianRegression(object):
         self.w = np.mean(beta_draws, axis=0)
 
         # Lower and upper boundary of the credible interval
-        l_eti = 50 - self.cred_int/2
-        u_eti = 50 + self.cred_int/2
+        l_eti = 50 - self.cred_int / 2
+        u_eti = 50 + self.cred_int / 2
         self.eti = np.array([[np.percentile(beta_draws[:,i], q=l_eti), np.percentile(beta_draws[:,i], q=u_eti)] \
                                 for i in range(n_features)])
 
