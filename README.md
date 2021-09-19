@@ -21,8 +21,10 @@ Also check my another repo: https://github.com/TimS-ml/My-ML
 # Quick Start
 ```python
 from scratch.deep_learning import NeuralNetwork
-from scratch.deep_learning.layers import Dense, Dropout, Conv2D, Flatten, Activation, MaxPooling2D
-from scratch.deep_learning.layers import AveragePooling2D, ZeroPadding2D, BatchNormalization, RNN
+from scratch.deep_learning.layers import Dense, Conv2D, Flatten, Activation
+from scratch.deep_learning.layers import Dropout, Flatten, BatchNormalization 
+from scratch.deep_learning.layers import MaxPooling2D, AveragePooling2D, ZeroPadding2D
+from scratch.deep_learning.loss_functions import CrossEntropy
 
 
 clf = NeuralNetwork(optimizer=optimizer,
