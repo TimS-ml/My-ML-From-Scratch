@@ -16,17 +16,17 @@ dependency_links = [
 ]
 
 setup(
-    name='mlfromscratch',
+    name='scratch',
     version=__version__,
     description=
     'Python implementations of some of the fundamental Machine Learning models and algorithms from scratch.',
-    url='https://github.com/eriklindernoren/ML-From-Scratch',
+    url='https://github.com/TimS-ml/My-ML-From-Scratch',
     download_url=
-    'https://github.com/eriklindernoren/ML-From-Scratch/tarball/master',
+    'https://github.com/TimS-ml/My-ML-From-Scratch/tarball/master',
     license='MIT',
     packages=find_packages(),
     include_package_data=True,
-    author='Erik Linder-Noren',
+    author='Erik Linder-Noren and Tim Shen',
     install_requires=install_requires,
     setup_requires=['numpy>=1.10', 'scipy>=0.17'],
     dependency_links=dependency_links,

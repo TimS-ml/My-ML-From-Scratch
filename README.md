@@ -24,8 +24,8 @@ Also check my another repo: https://github.com/TimS-ml/My-ML
   - [ ] VGG
   - [ ] Inception
   - [ ] Efficientnet
-- [ ] Resuce package usage
-  - [ ] Update `setup.py` to `setup_require` and `extras_require`
+- [ ] Reduce package usage
+  - [ ] Update `setup.py` with `setup_require` and `extras_require`
 - [ ] Roughly compatible with PyTorch and sk-learn
   - [ ] Function name, operations, forward, backward etc.
 - [ ] PyOpenCL or CuPy for Nvidia and AMD GPU
