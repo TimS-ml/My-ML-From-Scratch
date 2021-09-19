@@ -9,7 +9,6 @@ from scratch.supervised_learning import LinearRegression
 
 
 def main():
-
     X, y = make_regression(n_samples=100, n_features=1, noise=20)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)

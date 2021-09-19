@@ -18,6 +18,42 @@ The ultimate goal is to achieve something like [numpy-ml](https://github.com/ddb
 Also check my another repo: https://github.com/TimS-ml/My-ML
 
 
+# Quick Start
+```python
+from scratch.deep_learning import NeuralNetwork
+from scratch.deep_learning.layers import Dense, Dropout, Conv2D, Flatten, Activation, MaxPooling2D
+from scratch.deep_learning.layers import AveragePooling2D, ZeroPadding2D, BatchNormalization, RNN
+
+
+clf = NeuralNetwork(optimizer=optimizer,
+                    loss=CrossEntropy,
+                    validation_data=(X_test, y_test))
+
+clf.add(
+    Conv2D(n_filters=16,
+           filter_shape=(3, 3),
+           stride=1,
+           input_shape=(1, 8, 8),
+           padding='same'))
+clf.add(Activation('relu'))
+clf.add(Dropout(0.25))
+clf.add(BatchNormalization())
+clf.add(Conv2D(n_filters=32, filter_shape=(3, 3), stride=1,
+               padding='same'))
+clf.add(Activation('relu'))
+clf.add(Dropout(0.25))
+clf.add(BatchNormalization())
+clf.add(Flatten())
+clf.add(Dense(256))
+clf.add(Activation('relu'))
+clf.add(Dropout(0.4))
+clf.add(BatchNormalization())
+clf.add(Dense(10))
+clf.add(Activation('softmax'))
+```
+
+
+
 # TODO
 - [ ] Add more models
   - [ ] Transformer
@@ -28,6 +64,7 @@ Also check my another repo: https://github.com/TimS-ml/My-ML
   - [ ] Update `setup.py` with `setup_require` and `extras_require`
 - [ ] Roughly compatible with PyTorch and sk-learn
   - [ ] Function name, operations, forward, backward etc.
+    - [ ] Re-write implementations of `scratch.deep_learning`
 - [ ] PyOpenCL or CuPy for Nvidia and AMD GPU
   - Maybe M1 and Android GPU in the future...
 
