@@ -15,6 +15,8 @@ I want to run machine learning and deep leanring on my arm devices for fun (iPad
 
 The ultimate goal is to achieve something like [numpy-ml](https://github.com/ddbourgin/numpy-ml) and [tinygrad](https://github.com/geohot/tinygrad)
 
+Also check my another repo: https://github.com/TimS-ml/My-ML
+
 
 # TODO
 - [ ] Add more models
@@ -24,6 +26,8 @@ The ultimate goal is to achieve something like [numpy-ml](https://github.com/ddb
   - [ ] Efficientnet
 - [ ] Resuce package usage
   - [ ] Update `setup.py` to `setup_require` and `extras_require`
+- [ ] Roughly compatible with PyTorch and sk-learn
+  - [ ] Function name, operations, forward, backward etc.
 - [ ] PyOpenCL or CuPy for Nvidia and AMD GPU
   - Maybe M1 and Android GPU in the future...
 
