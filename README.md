@@ -57,6 +57,8 @@ clf.add(Activation('softmax'))
 
 
 # TODO
+- [ ] Parallel Programming with numpy and scipy
+  <!-- - https://scipy-cookbook.readthedocs.io/items/ParallelProgramming.html -->
 - [ ] Add more models
   - [ ] Transformer
   - [ ] VGG
