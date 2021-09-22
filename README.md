@@ -20,38 +20,41 @@ Also check my another repo: https://github.com/TimS-ml/My-ML
 
 # Quick Start
 ```python
-from scratch.deep_learning import NeuralNetwork
-from scratch.deep_learning.layers import Dense, Conv2D, Flatten, Activation
-from scratch.deep_learning.layers import Dropout, Flatten, BatchNormalization 
-from scratch.deep_learning.layers import MaxPooling2D, AveragePooling2D, ZeroPadding2D
-from scratch.deep_learning.loss_functions import CrossEntropy
+from scratch import deep_learning as dl
+from scratch.deep_learning import layers as lyr
+from scratch.deep_learning import optimizers as optm
+from scratch.deep_learning import loss_functions
 
 
-clf = NeuralNetwork(optimizer=optimizer,
-                    loss=CrossEntropy,
-                    validation_data=(X_test, y_test))
+clf = dl.NeuralNetwork(
+            optimizer=optm.Adam(),
+            loss=loss_functions.CrossEntropy,
+            validation_data=(X_test, y_test))
 
-clf.add(
-    Conv2D(n_filters=16,
-           filter_shape=(3, 3),
-           stride=1,
-           input_shape=(1, 8, 8),
-           padding='same'))
-clf.add(Activation('relu'))
-clf.add(Dropout(0.25))
-clf.add(BatchNormalization())
-clf.add(Conv2D(n_filters=32, filter_shape=(3, 3), stride=1,
-               padding='same'))
-clf.add(Activation('relu'))
-clf.add(Dropout(0.25))
-clf.add(BatchNormalization())
-clf.add(Flatten())
-clf.add(Dense(256))
-clf.add(Activation('relu'))
-clf.add(Dropout(0.4))
-clf.add(BatchNormalization())
-clf.add(Dense(10))
-clf.add(Activation('softmax'))
+clf.add(lyr.Conv2D(
+              n_filters=16,
+              filter_shape=(3, 3),
+              stride=1,
+              input_shape=(1, 8, 8),
+              padding='same'))
+clf.add(lyr.Activation('relu'))
+clf.add(lyr.Dropout(0.25))
+clf.add(lyr.BatchNormalization())
+clf.add(lyr.Conv2D(
+              n_filters=32, 
+              filter_shape=(3, 3), 
+              stride=1,
+              padding='same'))
+clf.add(lyr.Activation('relu'))
+clf.add(lyr.Dropout(0.25))
+clf.add(lyr.BatchNormalization())
+clf.add(lyr.Flatten())
+clf.add(lyr.Dense(256))
+clf.add(lyr.Activation('relu'))
+clf.add(lyr.Dropout(0.4))
+clf.add(lyr.BatchNormalization())
+clf.add(lyr.Dense(10))
+clf.add(lyr.Activation('softmax'))
 ```
 
 

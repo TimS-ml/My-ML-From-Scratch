@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 
 here = path.abspath(path.dirname(__file__))
 
@@ -30,4 +30,4 @@ setup(
     install_requires=install_requires,
     setup_requires=['numpy>=1.10', 'scipy>=0.17'],
     dependency_links=dependency_links,
-    author_email='eriklindernoren@gmail.com')
+    author_email='jshen44@fordham.edu')

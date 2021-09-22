@@ -7,3 +7,4 @@ scipy
 progressbar33
 terminaltables
 gym
+pyglet
