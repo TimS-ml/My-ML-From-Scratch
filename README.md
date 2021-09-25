@@ -13,67 +13,27 @@ Folked from: https://github.com/eriklindernoren/ML-From-Scratch
 
 I want to run machine learning and deep leanring on my arm devices for fun (iPad, Android Phone, Raspberry pi)
 
-The ultimate goal is to achieve something like [numpy-ml](https://github.com/ddbourgin/numpy-ml) and [tinygrad](https://github.com/geohot/tinygrad)
+References:
+- https://github.com/eriklindernoren/ML-From-Scratch
+- https://github.com/ddbourgin/numpy-ml
 
-Also check my another repo: https://github.com/TimS-ml/My-ML
+Check my other repos: 
+- https://github.com/TimS-ml/Scratch-ML
+- https://github.com/TimS-ml/Scratch-DL
+- https://github.com/TimS-ml/My-ML
+- https://github.com/TimS-ml/My-Algo
 
 
 # Quick Start
 ```python
-from scratch import deep_learning as dl
-from scratch.deep_learning import layers as lyr
-from scratch.deep_learning import optimizers as optm
-from scratch.deep_learning import loss_functions
-
-
-clf = dl.NeuralNetwork(
-            optimizer=optm.Adam(),
-            loss=loss_functions.CrossEntropy,
-            validation_data=(X_test, y_test))
-
-clf.add(lyr.Conv2D(
-              n_filters=16,
-              filter_shape=(3, 3),
-              stride=1,
-              input_shape=(1, 8, 8),
-              padding='same'))
-clf.add(lyr.Activation('relu'))
-clf.add(lyr.Dropout(0.25))
-clf.add(lyr.BatchNormalization())
-clf.add(lyr.Conv2D(
-              n_filters=32, 
-              filter_shape=(3, 3), 
-              stride=1,
-              padding='same'))
-clf.add(lyr.Activation('relu'))
-clf.add(lyr.Dropout(0.25))
-clf.add(lyr.BatchNormalization())
-clf.add(lyr.Flatten())
-clf.add(lyr.Dense(256))
-clf.add(lyr.Activation('relu'))
-clf.add(lyr.Dropout(0.4))
-clf.add(lyr.BatchNormalization())
-clf.add(lyr.Dense(10))
-clf.add(lyr.Activation('softmax'))
 ```
-
 
 
 # TODO
 - [ ] Parallel Programming with numpy and scipy
   <!-- - https://scipy-cookbook.readthedocs.io/items/ParallelProgramming.html -->
-- [ ] Add more models
-  - [ ] Transformer
-  - [ ] VGG
-  - [ ] Inception
-  - [ ] Efficientnet
 - [ ] Reduce package usage
   - [ ] Update `setup.py` with `setup_require` and `extras_require`
-- [ ] Roughly compatible with PyTorch and sk-learn
-  - [ ] Function name, operations, forward, backward etc.
-    - [ ] Re-write implementations of `scratch.deep_learning`
-- [ ] PyOpenCL or CuPy for Nvidia and AMD GPU
-  - Maybe M1 and Android GPU in the future...
 
 
 
