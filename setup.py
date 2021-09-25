@@ -16,10 +16,10 @@ dependency_links = [
 ]
 
 setup(
-    name='scratch',
+    name='scratchML',
     version=__version__,
     description=
-    'Python implementations of some of the fundamental Machine Learning models and algorithms from scratch.',
+    'Python implementations of some of the fundamental Machine Learning models and algorithms from scratchML.',
     url='https://github.com/TimS-ml/My-ML-From-Scratch',
     download_url=
     'https://github.com/TimS-ml/My-ML-From-Scratch/tarball/master',
